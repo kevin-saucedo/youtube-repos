@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Files</title>
+  </head>
+  <body>
+
+
+    <form id="form" enctype="multipart/form-data">
+      <label>Subir Archivo</label><br />
+      <input type="file" name="inputfile" /><br />
+      <input type="submit" value="Subir" />
+    </form>
+
+    <p id="message"></p>
+
+
+    <script>
+      const message = document.getElementById("message");
+      const form = document.getElementById("form");
+
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const body = new FormData();
+        for (const file of form.inputfile.files) {
+          body.append("file", file);
+        }
+        fetch("/upload", {
+          method: "POST",
+          body,
+        })
+          .then((res) => res.text())
+          .then((text) => (message.innerText = text))
+          .catch(alert);
+      });
+
+    </script>
+  </body>
+</html>
